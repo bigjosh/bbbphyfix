@@ -32,12 +32,13 @@ sleep 60
 # by checking if the wake register has already been set
 # by a previous boot
 
+# we check the `sleep` register since the wake seems to get clobbered on reboot
 
-if (( $(bbbrtc wake) != 110 )); then 
+if (( $(bbbrtc sleep) != 102 )); then 
      NOW=$(bbbrtc now)
-     echo "CHKBBB:Rebooting NOW=$NOW" >/dev/kmsg
+     echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
      echo "Rebooting" >>/var/tmp/chkphy.log
-     # make sure that  message actually gets written before we pull the plug
+     # make sure that log message actually gets written before we pull the plug
      sync
      i2cset -f -y 0 0x24 0x0a 0x00
      bbbrtc now 130
@@ -45,6 +46,6 @@ if (( $(bbbrtc wake) != 110 )); then
      bbbrtc sleep 102
      bbbrtc now 100
 else
-     echo "CHKBBB:Already booted" >/dev/kmsg
-     echo "Already booted" >>/var/tmp/chkphy.log	      
+     echo "chkphy:Already booted" >/dev/kmsg
+     echo "Already booted $(date)" >>/var/tmp/chkphy.log	      
 fi
