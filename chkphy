@@ -17,21 +17,34 @@
 
 # The following part always gets executed.
 
+
+# first we sleep.
+# this gives plently of time for linux to mess with the RTC 
+# (where does it do that set?) before we touch it. Otherwise it 
+# occasionally updates it right between when we are doing our sets.
+
+# This also gives you a chance to abort in case something goes wrong
+# and avoid a infinite loop
+
+sleep 60
+
 # check if this is our first time waking
 # by checking if the wake register has already been set
 # by a previous boot
 
-if (( $(bbbrtc sleep) != 110 )); then 
-     echo "Rebooting" >/dev/kmsg
+
+if (( $(bbbrtc wake) != 110 )); then 
+     NOW=$(bbbrtc now)
+     echo "CHKBBB:Rebooting NOW=$NOW" >/dev/kmsg
      echo "Rebooting" >>/var/tmp/chkphy.log
      # make sure that  message actually gets written before we pull the plug
      sync
      i2cset -f -y 0 0x24 0x0a 0x00
      bbbrtc now 130
-     bbbrtc wake 120
-     bbbrtc sleep 110
+     bbbrtc wake 110
+     bbbrtc sleep 102
      bbbrtc now 100
 else
-     echo "Already booted" >/dev/kmsg
+     echo "CHKBBB:Already booted" >/dev/kmsg
      echo "Already booted" >>/var/tmp/chkphy.log	      
 fi
