@@ -26,9 +26,10 @@ if (( $(bbbrtc sleep) != 110 )); then
      # make sure that  message actually gets written before we pull the plug
      sync
      i2cset -f -y 0 0x24 0x0a 0x00
-     bbbrtc now 100
+     bbbrtc now 130
      bbbrtc wake 120
      bbbrtc sleep 110
+     bbbrtc now 100
 else
      echo "Already booted" >>/var/tmp/chkphy.log	 
 fi
