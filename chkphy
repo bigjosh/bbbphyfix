@@ -1,0 +1,38 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          example
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Example initscript
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.  This example start a
+#                    single forking daemon capable of writing a pid
+#                    file.  To get other behavoirs, implemend
+#                    do_start(), do_stop() or other functions to
+#                    override the defaults in /lib/init/init-d-script.
+### END INIT INFO
+
+
+# The following part always gets executed.
+echo "Booted" >>/var/tmp/chkphy.log
+
+# Wait until eth0 is either initialized or failed to initialize
+while ! dmesg | grep 'net eth0: phy found';
+   do echo 'Waiting for eth0...'
+   sleep 1
+
+   if dmesg | egrep -i 'mdio:03 not found'; then
+     echo "NO NETWORK, rebooting" >>/var/tmp/chkphy.log
+     # make sure that  message actually gets written before we pull the plug
+     sync
+     i2cset -f -y 0 0x24 0x0a 0x00
+     bbbrtc now 100
+     bbbrtc wake 120
+     bbbrtc sleep 110
+     exit
+   fi
+done
+echo "Network good $(date)" >>/var/tmp/chkphy.log
+sync
