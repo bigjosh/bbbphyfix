@@ -22,6 +22,7 @@
 # by a previous boot
 
 if (( $(bbbrtc sleep) != 110 )); then 
+     echo "Rebooting" >/dev/kmsg
      echo "Rebooting" >>/var/tmp/chkphy.log
      # make sure that  message actually gets written before we pull the plug
      sync
@@ -31,5 +32,6 @@ if (( $(bbbrtc sleep) != 110 )); then
      bbbrtc sleep 110
      bbbrtc now 100
 else
-     echo "Already booted" >>/var/tmp/chkphy.log	 
+     echo "Already booted" >/dev/kmsg
+     echo "Already booted" >>/var/tmp/chkphy.log	      
 fi
