@@ -15,25 +15,20 @@
 #                    override the defaults in /lib/init/init-d-script.
 ### END INIT INFO
 
-
 # The following part always gets executed.
-echo "Booted" >>/var/tmp/chkphy.log
 
-# Wait until eth0 is either initialized or failed to initialize
-while ! dmesg | grep 'net eth0: phy found';
-   do echo 'Waiting for eth0...'
-   sleep 1
+# check if this is our first time waking
+# by checking if the wake register has already been set
+# by a previous boot
 
-   if dmesg | egrep -i 'mdio:03 not found'; then
-     echo "NO NETWORK, rebooting" >>/var/tmp/chkphy.log
+if (( $(bbbrtc sleep) != 110 )); then 
+     echo "Rebooting" >>/var/tmp/chkphy.log
      # make sure that  message actually gets written before we pull the plug
      sync
      i2cset -f -y 0 0x24 0x0a 0x00
      bbbrtc now 100
      bbbrtc wake 120
      bbbrtc sleep 110
-     exit
-   fi
-done
-echo "Network good $(date)" >>/var/tmp/chkphy.log
-sync
+else
+     echo "Already booted" >>/var/tmp/chkphy.log	 
+fi
