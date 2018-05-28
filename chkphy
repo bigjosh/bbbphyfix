@@ -26,7 +26,7 @@
 # This also gives you a chance to abort in case something goes wrong
 # and avoid a infinite loop
 
-sleep 60
+sleep 30
 
 # check if this is our first time waking
 # by checking if the wake register has already been set
