@@ -1,11 +1,12 @@
-#! /bin/sh
+#! /bin/bash
+
 ### BEGIN INIT INFO
-# Provides:          example
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Provides:          chkphy
+# Required-Start:    
+# Required-Stop:     
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Example initscript
+# Short-Description: Check BBB phy on boot and repower if PHY failed
 # Description:       This file should be used to construct scripts to be
 #                    placed in /etc/init.d.  This example start a
 #                    single forking daemon capable of writing a pid
