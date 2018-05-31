@@ -13,6 +13,6 @@ A software only workaround for the Beagle Bone Black PHY bug
 
     ssh -o StrictHostKeyChecking=no root@192.168.1.168 "rm -r bbbphyfix/; git clone https://github.com/bigjosh/bbbphyfix; cd bbbphyfix/; ./install.sh; sync"
     
-    ### Disable
+### Disable
     
-        update-rc.d -f chkphy remove
+    update-rc.d -f chkphy remove
