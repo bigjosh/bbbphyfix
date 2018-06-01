@@ -28,13 +28,12 @@
 
 sleep 30
 
-# check if this is our first time waking
-# by checking if the wake register has already been set
-# by a previous boot
+# Wait until eth0 is either initialized or failed to initialize
+while ! dmesg | grep 'net eth0: phy found';
+   do echo 'Waiting for eth0...'
+   sleep 1
 
-# we check the `sleep` register since the wake seems to get clobbered on reboot
-
-if (( $(bbbrtc sleep) != 102 )); then 
+   if dmesg | egrep -i 'mdio:03 not found'; then
      NOW=$(bbbrtc now)
      echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
      echo "Rebooting" >>/var/tmp/chkphy.log
@@ -45,7 +44,11 @@ if (( $(bbbrtc sleep) != 102 )); then
      bbbrtc wake 110
      bbbrtc sleep 102
      bbbrtc now 100
-else
-     echo "chkphy:Already booted" >/dev/kmsg
-     echo "Already booted $(date)" >>/var/tmp/chkphy.log	      
-fi
+	 while true; 
+	    do echo waiting to reboot
+		sleep 10
+	done
+   fi
+done
+
+echo "chkphy:eth0 good" >/dev/kmsg
