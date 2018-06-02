@@ -14,8 +14,8 @@ rm -r $DIR
 DIR=$(mktemp -d -t bbbrtc.XXXXXX) || exit 1
 echo "tmpdir = $DIR"
 pushd "$DIR"
-git clone https://github.com/bigjosh/bbbrtc
-cd bbbrtc
+git clone https://github.com/bigjosh/phyreg
+cd phyreg
 make
 popd
 rm -r $DIR
