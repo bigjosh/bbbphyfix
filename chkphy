@@ -28,27 +28,24 @@
 
 sleep 30
 
-# Wait until eth0 is either initialized or failed to initialize
-while ! dmesg | grep 'net eth0: phy found';
-   do echo 'Waiting for eth0...'
-   sleep 1
+if [[ $(phyreg test 18 13) == "1" ]]; then 
 
-   if dmesg | egrep -i 'mdio:03 not found'; then
-     NOW=$(bbbrtc now)
-     echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
-     echo "Rebooting" >>/var/tmp/chkphy.log
-     # make sure that log message actually gets written before we pull the plug
-     sync
-     i2cset -f -y 0 0x24 0x0a 0x00
-     bbbrtc now 130
-     bbbrtc wake 110
-     bbbrtc sleep 102
-     bbbrtc now 100
-	 while true; 
-	    do echo waiting to reboot
-		sleep 10
+	sleep 1
+
+	NOW=$(bbbrtc now)
+	echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
+	echo "Rebooting" >>/var/tmp/chkphy.log
+	# make sure that log message actually gets written before we pull the plug
+	sync
+	i2cset -f -y 0 0x24 0x0a 0x00
+	bbbrtc now 130
+	bbbrtc wake 110
+	bbbrtc sleep 102
+	bbbrtc now 100
+	while true; 
+	  do echo waiting to reboot
+	  sleep 10
 	done
-   fi
-done
+fi
 
 echo "chkphy:eth0 good" >/dev/kmsg
