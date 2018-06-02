@@ -16,7 +16,9 @@ echo "tmpdir = $DIR"
 pushd "$DIR"
 git clone https://github.com/bigjosh/phyreg
 cd phyreg
+make clean
 make
+make install
 popd
 rm -r $DIR
 
