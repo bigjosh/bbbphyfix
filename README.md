@@ -16,3 +16,8 @@ A software only workaround for the Beagle Bone Black PHY bug
 ### Disable
     
     update-rc.d -f chkphy remove
+
+## Pushing to remote mahcines
+
+Check out...
+https://github.com/bigjosh/pushphyfix
