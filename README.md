@@ -21,7 +21,7 @@ https://wp.josh.com/2018/06/04/a-software-only-solution-to-the-vexing-beagle-bon
     
     update-rc.d -f chkphy remove
 
-## Pushing to remote mahcines
+## Pushing to remote mahcines with no internet connection
 
 Check out...
 https://github.com/bigjosh/pushphyfix
