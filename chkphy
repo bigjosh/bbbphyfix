@@ -50,3 +50,4 @@ if [[ $(phyreg test 18 13) == "1" ]]; then
 fi
 
 echo "chkphy:eth0 good" >/dev/kmsg
+echo "chkphy:eth0 good" >/dev/console
