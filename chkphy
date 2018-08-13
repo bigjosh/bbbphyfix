@@ -34,6 +34,7 @@ if [[ $(phyreg test 18 13) == "1" ]]; then
 
 	NOW=$(bbbrtc now)
 	echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
+	echo "chkphy:Rebooting NOW=$NOW" >/dev/console
 	echo "Rebooting" >>/var/tmp/chkphy.log
 	# make sure that log message actually gets written before we pull the plug
 	sync
