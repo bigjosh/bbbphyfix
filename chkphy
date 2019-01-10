@@ -41,7 +41,7 @@ case "$1" in
       bbbrtc unlock
     fi
 
-  	NOW=$(bbbrtc now)
+  	NOW=$(date +%s)
   	echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
   	echo "chkphy:Rebooting NOW=$NOW" >/dev/console
   	echo "Rebooting" >>/var/tmp/chkphy.log
