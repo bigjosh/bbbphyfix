@@ -1,0 +1,18 @@
+[Unit]
+Description=Check BBB phy on boot and repower if PHY failed
+After=local-fs.target
+Before=
+Requires=
+Wants=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/bbb-check-phy
+RemainAfterExit=yes
+TimeoutSec=0
+
+# Output needs to appear in instance console output
+StandardOutput=journal+console
+
+[Install]
+WantedBy=network-online.target
