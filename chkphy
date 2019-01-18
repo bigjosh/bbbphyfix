@@ -15,51 +15,10 @@
 #                    override the defaults in /lib/init/init-d-script.
 ### END INIT INFO
 
-# The following part always gets executed.
-
-
-# first we sleep.
-# this gives plently of time for linux to mess with the RTC
-# (where does it do that set?) before we touch it. Otherwise it
-# occasionally updates it right between when we are doing our sets.
-
-# This also gives you a chance to abort in case something goes wrong
-# and avoid a infinite loop
-
-kernel_major=`uname -r | grep -o -E '^[0-9]+'`
-
 case "$1" in
   start)
-  sleep 30
+  /usr/sbin/bbb-check-phy | /usr/bin/tee /dev/console >/dev/kmsg
 
-  if [[ $(phyreg test 18 13) == "1" ]]; then
-
-  	sleep 1
-
-    # unlock rtc registers if we are running a kernel newer than 3.X
-    if [ "$kernel_major" -ge "4" ]; then
-      bbbrtc unlock
-    fi
-
-  	NOW=$(date +%s)
-  	echo "chkphy:Rebooting NOW=$NOW" >/dev/kmsg
-  	echo "chkphy:Rebooting NOW=$NOW" >/dev/console
-  	echo "Rebooting" >>/var/tmp/chkphy.log
-  	# make sure that log message actually gets written before we pull the plug
-  	sync
-  	i2cset -f -y 0 0x24 0x0a 0x00
-  	bbbrtc now 130
-  	bbbrtc wake 110
-  	bbbrtc sleep 102
-  	bbbrtc now 100
-  	while true;
-  	  do echo waiting to reboot
-  	  sleep 10
-  	done
-  fi
-
-  echo "chkphy:eth0 good" >/dev/kmsg
-  echo "chkphy:eth0 good" >/dev/console
   ;;
   stop)
   echo "No stop action"
