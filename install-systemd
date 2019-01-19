@@ -24,9 +24,9 @@ rm -r $DIR
 
 #remove an existing init.rc if present
 update-rc.d -f chkphy remove
+rm -f /etc/init.d/chkphy
 #install our script to run every boot
 cp bbb-check-phy /usr/sbin/
 chmod +x /usr/sbin/bbb-check-phy
-cp chkphy /etc/init.d
-chmod +x /etc/init.d/chkphy
-sudo update-rc.d chkphy defaults
+cp chkphy.service /etc/systemd/system/
+systemctl enable chkphy
