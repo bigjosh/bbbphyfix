@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 # first we sleep.
 # this gives plently of time for linux to mess with the RTC
@@ -11,7 +11,7 @@
 
 sleep 30
 
-if [[ $(phyreg test 18 13) == "1" ]]; then
+if [ "$(phyreg test 18 13)" = "1" ]; then
 
 	sleep 1
 
